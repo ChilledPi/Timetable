@@ -19,7 +19,7 @@ class Lecture{
      string name;
      string num;
      string professor_id;
-     vector<tp> list;
+     vector<tp> tp_list;
 
      bool operator<(Lecture rhs) { return num < rhs.num; }
      bool operator==(Lecture rhs) { return num == rhs.num; }
