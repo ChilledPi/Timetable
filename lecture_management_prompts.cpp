@@ -15,12 +15,12 @@ void lecture_management_prompt() {
          << "------------------------------------------------------------------"
             "--------\n"
          << "B07 Timetable: menu > ";
-    
-    if((sel = check_num_input(2)) == 1){
-      add_lecture_prompt();
+    sel = check_num_input(2);
+    if (sel == 1) {
+      // add_lecture_prompt();
     } else if (sel == 2) {
       delete_lecture_prompt();
-    }else{
+    } else {
       return;
     }
   }

@@ -1,12 +1,14 @@
 #include "types.h"
-#include "menu_prompts.h"
+#include "main.h"
+#include "file_integrity.h"
 
 vector<Lecture> all_classes_list;
 
 int main(){
-    // 무결성 검사후
+  check_file();
 
-    while(true){
-      menu_prompt();
-    }
+  cout << "ok";
+  // while(true){
+  //   menu_prompt();
+  // }
 }

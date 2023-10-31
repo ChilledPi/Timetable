@@ -21,8 +21,8 @@ class Lecture{
      string professor_id;
      vector<tp> tp_list;
 
-     bool operator<(Lecture rhs) { return num < rhs.num; }
-     bool operator==(Lecture rhs) { return num == rhs.num; }
+     bool operator<(const Lecture& rhs) const { return num < rhs.num; }
+     bool operator==(const Lecture& rhs) const { return num == rhs.num; } // 없어도 될듯
 };
 
-#endif TYPES_H
+#endif

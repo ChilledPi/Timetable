@@ -24,10 +24,11 @@ void delete_lecture_prompt() {
     while (true) {
       print_lecture_list();
       cout << "삭제할 번호를 입력해주세요 > ";
-      if((sel = check_num_input(all_classes_list.size())) > 0){
+      sel = check_num_input(all_classes_list.size());
+      if (sel > 0) {
         iter = find(all_classes_list.begin(), all_classes_list.end(),
                     all_classes_list[sel - 1]);
-      }else{
+      } else {
         return;
       }
     }
@@ -36,13 +37,14 @@ void delete_lecture_prompt() {
       cout << "1) 예\n"
            << "0) 아니오 \n"
            << "정말 삭제하시겠습니까? > ";
-      if((sel = check_num_input(1)) == 1){
+      sel = check_num_input(1);
+      if (sel == 1) {
         all_classes_list.erase(iter);
         cout << "삭제가 완료되었습니다.\n"
              << "------------------------------------------------------------"
                 "--------------\n";
         break;
-      }else{
+      } else {
         return;
       }
     }
