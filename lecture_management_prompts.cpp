@@ -20,7 +20,7 @@ void lecture_management_prompt() {
       // add_lecture_prompt();
     } else if (sel == 2) {
       delete_lecture_prompt();
-    } else {
+    } else if(sel == 0){
       return;
     }
   }

@@ -31,31 +31,30 @@ int check_num_input(int num){
   string str;
   regex re("\\d+$");
   int ret;
+  bool is_num = true;
   getline(cin, str);
   trim(str);
   if (regex_match(str, re)) {
     ret = stoi(str);
-  } else {
-    ret = -1;
+  }else{
+    is_num = false;
   }
-  while(true){
-    //입력 받고 입력이 수면 수로, 문자열이면 -1로 ret 초기화
-    cout << "------------------------------------------------------------"
+
+  cout << "------------------------------------------------------------"
+          "--------------\n";
+  if (0 <= ret && ret <= num) {
+    return ret;
+  }else if(is_num){
+    cout << "! 잘못 입력했습니다. 범위(0~" << num
+         << ") 안에서 다시 선택해주세요\n"
+         << "------------------------------------------------------------"
             "--------------\n";
-    if (ret == 0) {
-      return -1;
-    } else if (ret == -1) {
-      cout << "! 잘못 입력했습니다. 범위(0~" << num
-           << ") 안에서 다시 선택해주세요\n"
-           << "------------------------------------------------------------"
-              "--------------\n";
-    } else if (ret <= num) {
-      return ret;
-    } else {
-      cout << "! " << ret << "번 항목이 존재하지 않습니다.\n"
-           << "------------------------------------------------------------"
-              "--------------\n";
-    }
+    return -1;
+  } else {
+    cout << "! " << ret << "번 항목이 존재하지 않습니다.\n"
+         << "------------------------------------------------------------"
+            "--------------\n";
+    return -1;
   }
 }
 
@@ -73,6 +72,7 @@ string read_name() {
   string str;
   int ret;
   int sel;
+  cout << "추가할 > ";
   while (true) {
     getline(cin, str);
     trim(str);
@@ -82,10 +82,9 @@ string read_name() {
     if(check_name(str) == 0){
       return str;
     } else {
-      cout << "!\n" // 오류 메세지
+      cout << "!\n"  // 오류 메세지
            << "------------------------------------------------------------"
               "--------------\n";
-      return nullptr;
     }
   }
 }
@@ -114,10 +113,9 @@ string read_num() {
     if (check_num(str) == 0) {
       return str;
     } else {
-      cout << "!\n" // 오류 메세지
+      cout << "!\n"  // 오류 메세지
            << "------------------------------------------------------------"
               "--------------\n";
-      return nullptr;
     }
   }
 }
@@ -129,7 +127,7 @@ int check_time(string time) {
     string sub1, sub2;
     sub1 = time.substr(1, 2);
     sub2 = time.substr(3, 4);
-    if (sub1 >= sub2) return -1;
+    if (stoi(sub1) >= stoi(sub2)) return -1;
     else
       return 0;
   }
@@ -149,10 +147,9 @@ string read_time() {
     if (check_time(str) == 0) {
       return str;
     } else {
-      cout << "!\n" // 오류 메세지
+      cout << "!\n"  // 오류 메세지
            << "------------------------------------------------------------"
               "--------------\n";
-      return nullptr;
     }
   }
 }

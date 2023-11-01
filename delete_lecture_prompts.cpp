@@ -28,7 +28,8 @@ void delete_lecture_prompt() {
       if (sel > 0) {
         iter = find(all_classes_list.begin(), all_classes_list.end(),
                     all_classes_list[sel - 1]);
-      } else {
+        break;
+      } else if(sel == 0){
         return;
       }
     }
@@ -44,7 +45,7 @@ void delete_lecture_prompt() {
              << "------------------------------------------------------------"
                 "--------------\n";
         break;
-      } else {
+      } else if(sel == 0){
         return;
       }
     }
