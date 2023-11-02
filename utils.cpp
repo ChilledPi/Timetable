@@ -1,13 +1,16 @@
-#include "types.h"
 #include "utils.h"
+
+#include <fstream>
 #include <iostream>
 #include <regex>
+
+#include "types.h"
 
 extern vector<Lecture> all_classes_list;
 
 void print_lecture_list() { // 어디까지 출력할 지 정하기
   sort(all_classes_list.begin(), all_classes_list.end());
-  cout << "0) 돌아가기";
+  cout << "0) 돌아가기\n";
   for (int i = 0; i < all_classes_list.size(); i++) {
     cout << i + 1 << ") " << all_classes_list[i].name << ' '
          << all_classes_list[i].num << '\n';
@@ -30,7 +33,7 @@ std::string trim(std::string const& str)  // 문자열 좌우 공백 제거
 int check_num_input(int num){
   string str;
   regex re("\\d+$");
-  int ret;
+  int ret = 0;
   bool is_num = true;
   getline(cin, str);
   trim(str);
@@ -42,9 +45,10 @@ int check_num_input(int num){
 
   cout << "------------------------------------------------------------"
           "--------------\n";
-  if (0 <= ret && ret <= num) {
-    return ret;
-  }else if(is_num){
+  if (is_num) {
+    if (0 <= ret && ret <= num) {
+      return ret;
+    }
     cout << "! " << ret << "번 항목이 존재하지 않습니다.\n"
          << "------------------------------------------------------------"
             "--------------\n";
@@ -72,7 +76,6 @@ string read_name() {
   string str;
   int ret;
   int sel;
-  cout << "추가할 > ";
   while (true) {
     getline(cin, str);
     trim(str);
@@ -152,4 +155,53 @@ string read_time() {
               "--------------\n";
     }
   }
+}
+
+void update_all_classes_file() {
+  ofstream ofs("allclasses.txt", ios::trunc);
+  sort(all_classes_list.begin(), all_classes_list.end());
+  for (Lecture iter : all_classes_list) {
+    ofs << iter.num << '\t' << iter.name << '\t'
+        << iter.professor_id;  // 이름을 벡터에 담을까
+    for (tp titer : iter.tp_list) {
+      ofs << titer.day << titer.time << ' ' << titer.classroom;
+    }
+    ofs << '\n';
+  }
+}
+
+bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
+  if (temp.empty()) {
+    return true;
+  }
+  Lecture temp2;
+  for (int i = 0; i < all_classes_list.size(); i++) {
+    if (all_classes_list.at(i).num == selectedLectureIndex) {
+      temp2 = all_classes_list.at(i);
+    }
+  }
+  for (int i = 0; i < temp.size(); i++) {
+    Lecture temp3;
+    for (int j = 0; j < all_classes_list.size(); i++) {
+      if (temp.at(i).num == all_classes_list.at(j).num) {
+        temp3 = all_classes_list.at(j);
+      }
+    }
+    for (int j = 0; j < temp3.tp_list.size(); j++) {
+      for (int k = 0; k < temp2.tp_list.size(); k++) {
+        if (temp2.tp_list.at(k).day == temp3.tp_list.at(j).day) {
+          int t2 = stoi(temp2.tp_list.at(k).time);
+          int t3 = stoi(temp3.tp_list.at(j).time);
+          int t22 = t2 / 100;
+          t2 %= 100;
+          int t33 = t3 / 100;
+          t3 %= 100;
+          if ((t33 >= t22 && t33 <= t2) || (t22 >= t33 && t22 <= t3)) {
+            return false;
+          }
+        }
+      }
+    }
+  }
+  return true;
 }

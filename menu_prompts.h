@@ -1,9 +1,7 @@
 #ifndef MENU_PROMPTS_H
 #define MENU_PROMPTS_H
 
-#include <iostream>
-
-void add_lecture_prompt();
-void delete_lecture_prompt();
+void lecture_management_prompt();
+void student_lecture_management_prompt();
 
 #endif

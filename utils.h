@@ -1,5 +1,6 @@
 #ifndef UTILS_T
 #define UTILS_T
+#include "types.h"
 #include <string>
 
 using namespace std;
@@ -18,4 +19,8 @@ int check_num(string num);
 string read_num();
 int check_time(string time);
 string read_time();
+
+void update_all_classes_file();
+
+bool is_addable(vector<Lecture> set, string idx);
 #endif

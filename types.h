@@ -16,13 +16,18 @@ typedef struct TimePlace{
 
 class Lecture{
     public:
-     string name;
      string num;
+     string name;
      string professor_id;
      vector<tp> tp_list;
 
+     Lecture(){};
+     Lecture(string num_): num(num_){}
+     Lecture(string num_, string name_, string professor_id_)
+         : num(num_), name(name_), professor_id(professor_id_) {}
+
      bool operator<(const Lecture& rhs) const { return num < rhs.num; }
-     bool operator==(const Lecture& rhs) const { return num == rhs.num; } // 없어도 될듯
+     bool operator==(const Lecture& rhs) const { return num == rhs.num; }
 };
 
 #endif
