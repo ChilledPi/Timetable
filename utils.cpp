@@ -72,7 +72,6 @@ int check_num_input(int num){
 
 int check_name(string name) {
   regex re("^[A-Z][a-z]{0,19}( [A-Z][a-z]{0,19}){0,2}$");
-
   if (regex_match(name, re)) {
     return 0;
   } else{
@@ -81,53 +80,48 @@ int check_name(string name) {
 }
 
 string read_name() {
-  string str;
-  int ret;
+  string ret;
   int sel;
-  while (true) {
-    getline(cin, str);
-    str = trim(str);
-    cout << "------------------------------------------------------------"
-            "--------------\n";
+  getline(cin, ret);
+  ret = trim(ret);
+  cout << "------------------------------------------------------------"
+          "--------------\n";
 
-    if(check_name(str) == 0){
-      return str;
-    } else {
-      cout << "!\n"  // 오류 메세지
-           << "------------------------------------------------------------"
-              "--------------\n";
-    }
+  if (check_name(ret) == 0) {
+    return ret;
+  } else {
+    cout << "!\n"  // 오류 메세지
+         << "------------------------------------------------------------"
+            "--------------\n";
+    return "";
   }
 }
 
 int check_num(string num) {
   regex re("^\\d{4}$");
-  if(num.length() != 4){
-    return -1;
-  }
+  // if(num.length() != 4){
+  //   return -1;
+  // }
   if(regex_match(num, re)){
     return 0;
   }
-  return -2;
+  return -1;
 }
 
 string read_num() {
-  string str;
-  int ret;
-  int sel;
-  while (true) {
-    getline(cin, str);
-    str = trim(str);
-    cout << "------------------------------------------------------------"
-            "--------------\n";
+  string ret;
+  getline(cin, ret);
+  ret = trim(ret);
+  cout << "------------------------------------------------------------"
+          "--------------\n";
 
-    if (check_num(str) == 0) {
-      return str;
-    } else {
-      cout << "!\n"  // 오류 메세지
-           << "------------------------------------------------------------"
-              "--------------\n";
-    }
+  if (check_num(ret) == 0) {
+    return ret;
+  } else {
+    cout << "!\n"  // 오류 메세지
+         << "------------------------------------------------------------"
+            "--------------\n";
+    return "";
   }
 }
 
@@ -138,7 +132,7 @@ int check_time(string time) {
     string sub1, sub2;
     sub1 = time.substr(1, 2);
     sub2 = time.substr(3, 4);
-    if (stoi(sub1) >= stoi(sub2)) return -1;
+    if (stoi(sub1) >= stoi(sub2)) return -2;
     else
       return 0;
   }
@@ -146,35 +140,41 @@ int check_time(string time) {
 }
 
 string read_time() {
-  string str;
-  int ret;
+  string ret;
   int sel;
-  while (true) {
-    getline(cin, str);
-    str = trim(str);
-    cout << "------------------------------------------------------------"
+  getline(cin, ret);
+  ret = trim(ret);
+  cout << "------------------------------------------------------------"
+          "--------------\n";
+  sel = check_time(ret);
+  if (sel == 0) {
+    return ret;
+  } else if(sel == -1) {
+    cout << "!\n"  // 오류 메세지
+         << "------------------------------------------------------------"
             "--------------\n";
-
-    if (check_time(str) == 0) {
-      return str;
-    } else {
-      cout << "!\n"  // 오류 메세지
-           << "------------------------------------------------------------"
-              "--------------\n";
-    }
+    return "";
+  } else{
+    cout << "! 시작시간이 종료시각보다 빨라야 합니다.\n"  // 오류 메세지
+         << "------------------------------------------------------------"
+            "--------------\n";
+    return "";
   }
 }
 
 void update_all_classes_file() {
   ofstream ofs("allclasses.txt", ios::trunc);
   sort(all_classes_list.begin(), all_classes_list.end());
-  for (Lecture iter : all_classes_list) {
-    ofs << iter.num << '\t' << iter.name << '\t'
-        << iter.professor_id;  // 이름을 벡터에 담을까
-    for (tp titer : iter.tp_list) {
-      ofs << titer.day << titer.time << ' ' << titer.classroom;
+  for (int i = 0; i < all_classes_list.size(); i++){
+    ofs << all_classes_list[i].num << '\t' << all_classes_list[i].name << '\t';
+    for (int j = 0; j < all_classes_list[i].tp_list.size(); j++) {
+      ofs << all_classes_list[i].tp_list[j].day
+          << all_classes_list[i].tp_list[j].time << ' '
+          << all_classes_list[i].tp_list[j].classroom;
+      if (j == (all_classes_list[i].tp_list.size() - 1)) ofs << '\t';
+      else ofs << ' ';
     }
-    ofs << '\n';
+    ofs << all_classes_list[i].professor_id << '\n';
   }
 }
 
@@ -188,17 +188,18 @@ bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
       temp2 = all_classes_list.at(i);
     }
   }
+
   for (int i = 0; i < temp.size(); i++) {
     Lecture temp3;
-    for (int j = 0; j < all_classes_list.size(); i++) {
-      if (temp.at(i).num == all_classes_list.at(j).num) {
+    for (int j = 0; j < all_classes_list.size(); j++) {
+      if (all_classes_list.at(j).num == temp.at(i).num) {
         temp3 = all_classes_list.at(j);
       }
     }
-    for (int j = 0; j < temp3.tp_list.size(); j++) {
-      for (int k = 0; k < temp2.tp_list.size(); k++) {
-        if (temp2.tp_list.at(k).day == temp3.tp_list.at(j).day) {
-          int t2 = stoi(temp2.tp_list.at(k).time);
+    for (int j = 0; j < temp2.tp_list.size(); j++) {
+      for (int k = 0; k < temp3.tp_list.size(); k++) {
+        if (temp2.tp_list.at(j).day == temp3.tp_list.at(k).day) {
+          int t2 = stoi(temp2.tp_list.at(i).time);
           int t3 = stoi(temp3.tp_list.at(j).time);
           int t22 = t2 / 100;
           t2 %= 100;
@@ -211,5 +212,50 @@ bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
       }
     }
   }
+
   return true;
 }
+
+// bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
+//   if (temp.empty()) {
+//     return true;
+//   }
+//   Lecture temp2;
+//   for (int i = 0; i < all_classes_list.size(); i++) {
+//     if (all_classes_list.at(i).num == selectedLectureIndex) {
+//       temp2 = all_classes_list.at(i);
+//     }
+//   }
+//   for (int i = 0; i < temp.size(); i++) {
+//     Lecture temp3;
+//     for (int j = 0; j < all_classes_list.size(); i++) {
+//       if (temp.at(i).num == all_classes_list.at(j).num) {
+//         temp3 = all_classes_list.at(j);
+//       }
+//     }
+//     for (int j = 0; j < temp3.tp_list.size(); j++) {
+//       for (int k = 0; k < temp2.tp_list.size(); k++) {
+//         if (temp2.tp_list.at(k).day == temp3.tp_list.at(j).day) {
+//           int t2 = stoi(temp2.tp_list.at(k).time);
+//           int t3 = stoi(temp3.tp_list.at(j).time);
+//           int t22 = t2 / 100;
+//           t2 %= 100;
+//           int t33 = t3 / 100;
+//           t3 %= 100;
+//           if ((t33 >= t22 && t33 <= t2) || (t22 >= t33 && t22 <= t3)) {
+//             return false;
+//           }
+//         }
+//       }
+//     }
+//   }
+//   return true;
+// }
+
+Lecture& Lecture::operator=(const Lecture& rhs) {
+  num = rhs.num;
+  name = rhs.name;
+  professor_id = rhs.professor_id;
+  tp_list = rhs.tp_list;
+  return *this;
+  }

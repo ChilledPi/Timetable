@@ -12,6 +12,8 @@ typedef struct TimePlace{
   Day day;
   string classroom;
   string time;
+
+  // tp(Day day_, string classroom_, string time_) : day(day_), classroom(classroom_), time(time_) {}
 } tp;
 
 class Lecture{
@@ -28,6 +30,9 @@ class Lecture{
 
      bool operator<(const Lecture& rhs) const { return num < rhs.num; }
      bool operator==(const Lecture& rhs) const { return num == rhs.num; }
+     Lecture& operator=(const Lecture& rhs);
 };
+
+
 
 #endif

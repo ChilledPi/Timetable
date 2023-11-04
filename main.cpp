@@ -4,7 +4,7 @@
 #include "utils.h"
 
 vector<Lecture> all_classes_list;
-vector<string> professor;
+vector<pair<string, string>> professor;
 vector<string> classrooms;
 
 string home_path;

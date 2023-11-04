@@ -4,7 +4,7 @@
 #include "utils.h"
 
 extern vector<Lecture> all_classes_list;
-extern vector<string> professor;
+extern vector<pair<string, string>> professor;
 extern vector<string> classrooms;
 
 extern string home_path;
@@ -38,6 +38,7 @@ bool prof_is_addable(string prof, vector<tp> his_time) {
   }
   return true;
 }
+
 bool room_is_addable(tp time, string room) {
   for (int i = 0; i < all_classes_list.size(); i++) {
     for (int j = 0; j < all_classes_list.at(i).tp_list.size(); j++) {
@@ -96,17 +97,20 @@ void all_class_integrity() {
         for (int i = 0; i < all_classes_list.size(); i++) {
           if (num == all_classes_list.at(i).num) {
             is_fuckedup = true;
+            // cout << "1\n";
             break;
           }
         }
         if (check_num(num) != 0) {
           is_fuckedup = true;
+          // cout << "2\n";
           break;
         }
         all_classes.num = num;
       } else if (a == 1) {
         if (check_name(num) != 0) {
           is_fuckedup = true;
+          // cout << "3\n";
           break;
         }
         all_classes.name = num;
@@ -123,9 +127,10 @@ void all_class_integrity() {
             case 0:
               if (check_time(dt) != 0) {
                 is_fuckedup = true;
+                // cout << "1\n";
                 break;
               }
-              c = dt.at(0) - '1';
+              c = dt.at(0) - '0';
               switch (c) {
                 case 0:
                   thatday.day = MON;
@@ -147,6 +152,7 @@ void all_class_integrity() {
               thatday.time = dt;
               if (!is_expendable(dtl, thatday.day, thatday.time)) {
                 is_fuckedup = true;
+                // cout << "4\n";
                 break;
               }
               break;
@@ -158,10 +164,12 @@ void all_class_integrity() {
               }
               if (check_num(dt) != 0 || exists == false) {
                 is_fuckedup = true;
+                // cout << "5\n";
                 break;
               }
               if (!room_is_addable(thatday, dt)) {
                 is_fuckedup = true;
+                // cout << "6\n";
                 break;
               }
               thatday.classroom = dt;
@@ -174,16 +182,18 @@ void all_class_integrity() {
       } else if (a == 3) {
         bool exist = false;
         for (int i = 0; i < professor.size(); i++) {
-          if (professor.at(i) == num) {
+          if (professor[i].first == num) {
             exist = true;
           }
         }
         if (check_num(num) != 0 || exist == false) {
           is_fuckedup = true;
+          // cout << "7\n";
           break;
         }
         if (!prof_is_addable(num, all_classes.tp_list)) {
           is_fuckedup = true;
+          // cout << "8\n";
           break;
         }
         all_classes.professor_id = num;
@@ -197,19 +207,81 @@ void all_class_integrity() {
     all_classes_list.push_back(all_classes);
   }
   if (file_is_fuckedup) {
+    // cout << "1";
     abort();
   }
 }
+
+// void time_table_integrity() {
+//   fstream newfile;
+//   string classes;
+//   newfile.open("timetables.txt");
+//   bool file_is_fuckedup = false;
+//   while (getline(newfile, classes)) {
+//     string num;
+//     istringstream ss(classes);
+//     int a = 0;
+//     vector<string> time_name;
+//     bool is_fuckedup = false
+// cout << "1";
+//     string last = "";
+//     last += classes.back();
+//     if (classes == "" || last == "\t") {
+//       is_fuckedup = true;
+//     }
+//     vector<Lecture> temp;
+//     while (getline(ss, num, '\t')) {
+//       if (a == 0) {
+//         for (int i = 0; i < time_name.size(); i++) {
+//           if (num == time_name.at(i) || check_name(num) == -1) {
+//             is_fuckedup = true;
+//             break;
+//           }
+//         }
+//         time_name.push_back(num);
+//       } else {
+//         bool exist = false;
+//         for (int i = 0; i < all_classes_list.size(); i++) {
+//           if (all_classes_list.at(i).num == num) {
+//             exist = true;
+//           }
+//         }
+//         if (exist == false) {
+//           is_fuckedup = true;
+//           break;
+//         }
+//         if (!temp.empty()) {
+//           if (is_addable(temp, num)) {
+//             Lecture temp2;
+//             temp2.num = num;
+//             temp.push_back(temp2);
+//           } else {
+//             is_fuckedup = true;
+//           }
+//         }
+//       }
+//       a++;
+//     }
+//     if (is_fuckedup) {
+//       cout << classes << endl;
+//       file_is_fuckedup = true;
+//     }
+//   }
+//   if (file_is_fuckedup == true) {
+//     abort();
+//   }
+// }
+
 void time_table_integrity() {
   fstream newfile;
   string classes;
-  newfile.open("timetables.txt");
+  newfile.open("C:\\Timetable\\timetables.txt");
   bool file_is_fuckedup = false;
+  vector<string> time_name;
   while (getline(newfile, classes)) {
     string num;
     istringstream ss(classes);
     int a = 0;
-    vector<string> time_name;
     bool is_fuckedup = false;
     string last = "";
     last += classes.back();
@@ -237,15 +309,12 @@ void time_table_integrity() {
           is_fuckedup = true;
           break;
         }
-        if (!temp.empty()) {
-          if (is_addable(temp, num)) {
-            Lecture temp2;
-            temp2.num = num;
-            temp.push_back(temp2);
-          } else {
-            is_fuckedup = true;
-          }
+        Lecture temp2;
+        temp2.num = num;
+        if (!is_addable(temp, num)) {
+          is_fuckedup = true;
         }
+        temp.push_back(temp2);
       }
       a++;
     }
@@ -255,36 +324,47 @@ void time_table_integrity() {
     }
   }
   if (file_is_fuckedup == true) {
+    // cout << "2";
     abort();
   }
 }
+
 void professor_list_integrity() {
   bool file_is_fuckedup = false;
   fstream newfile;
   string classes;
+  set<string> proflist;
   newfile.open("Professor_list.txt");
   if (newfile.peek() == ifstream::traits_type::eof()) abort();
   while (getline(newfile, classes)) {
     string num;
+    pair<string, string> temp;
     istringstream ss(classes);
     int a = 0;
     bool is_fuckedup = false;
     string last = "";
     last += classes.back();
     if (classes == "" || last == "\t") {
+      // cout << " 11 ";
       is_fuckedup = true;
     }
     while (getline(ss, num, '\t')) {
       if (a == 0) {
-        if (check_num(num) != 0) {
+        if (check_num(num) == -1) {
+          // cout << " 12 ";
           is_fuckedup = true;
         }
-        professor.push_back(num);
+        temp.first = num;
+        proflist.insert(num);
       } else if (a == 1) {
         if (check_name(num) == -1) {
+          // cout << " 13 ";
           is_fuckedup = true;
         }
+        temp.second = num;
+        professor.push_back(temp);
       } else {
+        // cout << " 14 ";
         is_fuckedup = true;
       }
       a++;
@@ -294,8 +374,8 @@ void professor_list_integrity() {
       file_is_fuckedup = true;
     }
   }
-  set<string> proflist(professor.begin(), professor.end());
   if (proflist.size() < professor.size() || file_is_fuckedup == true) {
+    // cout << "3";
     abort();
   }
 }
@@ -317,6 +397,7 @@ void classroom_list_integrity() {
   }
   set<string> roomlist(classrooms.begin(), classrooms.end());
   if (roomlist.size() < classrooms.size() || is_fuckedup == true) {
+    // cout << "4";
     abort();
   }
 }
@@ -328,7 +409,7 @@ void check_file() {
   ifstream lect4("timetables.txt");
   bool exist = true;
   if (!lect) {
-    cout << "경고: 홈 경로" << home_path
+    cout << "오류: 홈 경로" << home_path
          << "에 Professor_list 데이터 파일이 없습니다." << endl;
     abort();
     // cout << "홈 경로에 빈 데이터 파일을 새로 생성했습니다:" << endl;
@@ -343,7 +424,7 @@ void check_file() {
   }
 
   if (!lect2) {
-    cout << "경고: 홈 경로" << home_path
+    cout << "오류: 홈 경로" << home_path
          << "에 Classroom_list 데이터 파일이 없습니다." << endl;
     abort();
     // cout << "홈 경로에 빈 데이터 파일을 새로 생성했습니다:" << endl;
