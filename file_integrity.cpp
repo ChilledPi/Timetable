@@ -1,6 +1,7 @@
 #include "file_integrity.h"
-#include "utils.h"
+
 #include "types.h"
+#include "utils.h"
 
 extern vector<Lecture> all_classes_list;
 extern vector<string> professor;
@@ -81,6 +82,11 @@ void all_class_integrity() {
   newfile.open("allclasses.txt");
   while (getline(newfile, classes)) {
     bool is_fuckedup = false;
+    string last = "";
+    last += classes.back();
+    if (classes == "" || last == "\t") {
+      is_fuckedup = true;
+    }
     string num;
     istringstream ss(classes);
     int a = 0;
@@ -205,6 +211,11 @@ void time_table_integrity() {
     int a = 0;
     vector<string> time_name;
     bool is_fuckedup = false;
+    string last = "";
+    last += classes.back();
+    if (classes == "" || last == "\t") {
+      is_fuckedup = true;
+    }
     vector<Lecture> temp;
     while (getline(ss, num, '\t')) {
       if (a == 0) {
@@ -254,12 +265,14 @@ void professor_list_integrity() {
   newfile.open("Professor_list.txt");
   if (newfile.peek() == ifstream::traits_type::eof()) abort();
   while (getline(newfile, classes)) {
-    bool is_fuckedup = false;
     string num;
     istringstream ss(classes);
     int a = 0;
-    if (classes == "") {
-      file_is_fuckedup = true;
+    bool is_fuckedup = false;
+    string last = "";
+    last += classes.back();
+    if (classes == "" || last == "\t") {
+      is_fuckedup = true;
     }
     while (getline(ss, num, '\t')) {
       if (a == 0) {
@@ -308,16 +321,15 @@ void classroom_list_integrity() {
   }
 }
 
-
 void check_file() {
-
   ifstream lect("Professor_list.txt");
   ifstream lect2("Classroom_list.txt");
   ifstream lect3("allclasses.txt");
   ifstream lect4("timetables.txt");
   bool exist = true;
   if (!lect) {
-    cout << "경고: 홈 경로" << home_path << "에 Professor_list 데이터 파일이 없습니다." << endl;
+    cout << "경고: 홈 경로" << home_path
+         << "에 Professor_list 데이터 파일이 없습니다." << endl;
     abort();
     // cout << "홈 경로에 빈 데이터 파일을 새로 생성했습니다:" << endl;
     // cout << home_path << "\\Professor_list.txt" << endl;
@@ -331,10 +343,11 @@ void check_file() {
   }
 
   if (!lect2) {
-    cout << "경고: 홈 경로" << home_path << "에 Classroom_list 데이터 파일이 없습니다." << endl;
+    cout << "경고: 홈 경로" << home_path
+         << "에 Classroom_list 데이터 파일이 없습니다." << endl;
     abort();
-      // cout << "홈 경로에 빈 데이터 파일을 새로 생성했습니다:" << endl;
-      // exist = false;
+    // cout << "홈 경로에 빈 데이터 파일을 새로 생성했습니다:" << endl;
+    // exist = false;
     // cout << home_path << "\\Classroom_list.txt " << endl;
     // ofstream class_file("Classroom_list.txt");
     // if (stat("C:\\Timetable\\Classroom_list.txt", &sb) != 0) {
@@ -346,7 +359,8 @@ void check_file() {
 
   if (!lect3) {
     if (!exist) {
-      cout << "경고: 홈 경로" << home_path << "에 데이터 파일이 없습니다." << endl;
+      cout << "경고: 홈 경로" << home_path << "에 데이터 파일이 없습니다."
+           << endl;
       cout << "홈 경로에 빈 데이터 파일을 새로 생성했습니다:" << endl;
       exist = false;
     }

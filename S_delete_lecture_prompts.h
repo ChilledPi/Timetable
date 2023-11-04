@@ -1,0 +1,4 @@
+#ifndef S_DELETE_LECTURE_PROMPTS_H
+#define S_DELETE_LECTURE_PROMPTS_H
+
+#endif

@@ -14,7 +14,7 @@ void menu_prompt(){
     cout << "B07 Timetable : menu > ";
     sel = check_num_input(2);
     if (sel == 1) {
-      lecture_management_prompt();
+      A_lecture_management_prompt();
     } else if (sel == 2) {
     //   student_lecture_management_prompt();
     } else if(sel == 0){

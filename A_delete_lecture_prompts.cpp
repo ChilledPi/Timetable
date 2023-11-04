@@ -1,12 +1,12 @@
 #include "types.h"
 #include "utils.h"
-#include "delete_lecture_prompts.h"
+#include "A_delete_lecture_prompts.h"
 #include <iostream>
 #include <algorithm>
 
 extern vector<Lecture> all_classes_list;
 
-void delete_lecture_prompt() {
+void A_delete_lecture_prompt() {
   int sel;
   vector<Lecture>::iterator iter;
   while (true) {

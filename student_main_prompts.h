@@ -1,4 +1,0 @@
-#ifndef STUDENT_MAIN_PROMPTS_H
-#define STUDENT_MAIN_PROMPTS_H
-
-#endif

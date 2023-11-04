@@ -7,9 +7,9 @@ using namespace std;
 
 void print_lecture_list();  // 강의 목록 출력
 
-std::string ltrim(std::string const& str);  //문자열 좌측 공백 제거
-std::string rtrim(std::string const& str);  // 문자열 우측 공백 제거
-std::string trim(std::string const& str);   // 문자열 좌우 공백 제거
+std::string ltrim(std::string const & str);  //문자열 좌측 공백 제거
+std::string rtrim(std::string const & str);  // 문자열 우측 공백 제거
+std::string trim(std::string const & str);   // 문자열 좌우 공백 제거
 
 int check_num_input(int num);
 

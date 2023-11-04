@@ -13,32 +13,40 @@ void print_lecture_list() { // 어디까지 출력할 지 정하기
   cout << "0) 돌아가기\n";
   for (int i = 0; i < all_classes_list.size(); i++) {
     cout << i + 1 << ") " << all_classes_list[i].name << ' '
-         << all_classes_list[i].num << '\n';
+         << all_classes_list[i].num << ' ';
+         for(tp j : all_classes_list[i].tp_list){
+           cout << j.day << j.time << '\n';
+         }
   }
 }
 
-std::string ltrim(std::string const& str)  // 문자열 좌측 공백 제거
+std::string ltrim(std::string const & str)  // 문자열 좌측 공백 제거
 {
   return std::regex_replace(str, std::regex("^\\s+"), "");
 }
-std::string rtrim(std::string const& str)  // 문자열 우측 공백 제거
+std::string rtrim(std::string const & str)  // 문자열 우측 공백 제거
 {
   return std::regex_replace(str, std::regex("\\s+$"), "");
 }
-std::string trim(std::string const& str)  // 문자열 좌우 공백 제거
+std::string trim(std::string const & str)  // 문자열 좌우 공백 제거
 {
   return ltrim(rtrim(str));
 }
 
 int check_num_input(int num){
   string str;
-  regex re("\\d+$");
+  regex zero("^0[0-9]+$");
+  regex re("^\\d+$");
   int ret = 0;
   bool is_num = true;
   getline(cin, str);
-  trim(str);
+  str = trim(str);
   if (regex_match(str, re)) {
-    ret = stoi(str);
+    if (regex_match(str, zero)) {
+      is_num = false;
+    } else {
+      ret = stoi(str);
+    }
   }else{
     is_num = false;
   }
@@ -78,7 +86,7 @@ string read_name() {
   int sel;
   while (true) {
     getline(cin, str);
-    trim(str);
+    str = trim(str);
     cout << "------------------------------------------------------------"
             "--------------\n";
 
@@ -93,7 +101,7 @@ string read_name() {
 }
 
 int check_num(string num) {
-  regex re("\\d{4}$");
+  regex re("^\\d{4}$");
   if(num.length() != 4){
     return -1;
   }
@@ -109,7 +117,7 @@ string read_num() {
   int sel;
   while (true) {
     getline(cin, str);
-    trim(str);
+    str = trim(str);
     cout << "------------------------------------------------------------"
             "--------------\n";
 
@@ -124,7 +132,7 @@ string read_num() {
 }
 
 int check_time(string time) {
-  regex re("[0-4]((0[1-9])|(1[0-8])){2}$");
+  regex re("^[0-4]((0[1-9])|(1[0-8])){2}$");
 
   if(regex_match(time, re)){
     string sub1, sub2;
@@ -143,7 +151,7 @@ string read_time() {
   int sel;
   while (true) {
     getline(cin, str);
-    trim(str);
+    str = trim(str);
     cout << "------------------------------------------------------------"
             "--------------\n";
 
