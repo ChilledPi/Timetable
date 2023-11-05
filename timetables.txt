@@ -1,0 +1,3 @@
+Cs Timetable	3164	3167
+Physics Timetable
+Economics Timetable

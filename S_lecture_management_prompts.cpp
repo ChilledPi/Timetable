@@ -40,7 +40,7 @@ void S_lecture_management_prompt(){
   while (true) {
     cout << "> 학생 메뉴\n";
     print_selected_timetable(selected_line);
-    cout << "0) 돌아가기\n\n"
+    cout << "\n0) 돌아가기\n\n"
          << "1) 강의 추가\n\n"
          << "2) 강의 삭제\n"
          << "------------------------------------------------------------------"

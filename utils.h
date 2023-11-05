@@ -27,4 +27,11 @@ bool is_addable(vector<Lecture> set, string idx);
 int print_timetable_list();
 
 void print_selected_timetable(int selected_line);
+
+bool name_duplication(string name);
+
+void add_tables(string name);
+
+bool S_check_file();
+
 #endif

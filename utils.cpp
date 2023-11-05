@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <regex>
+#include <sstream>
 // #include <algorithm>
 
 #include "types.h"
@@ -422,4 +423,93 @@ bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
     cout << "Unable to open file";
     return;
   }
+  }
+
+  bool name_duplication(string name) {
+  vector<string> lines;
+  vector<string> dup;
+  string line;
+
+  ifstream file("timetables.txt");
+  if (file.is_open()) {
+    while (getline(file, line)) {
+      lines.push_back(line);
+    }
+  }
+  file.close();
+
+  for (const string& name : lines) {
+    stringstream ss(name);
+    string token;
+    getline(ss, token, '\t');
+    dup.push_back(token);
+  }
+
+  for (int i = 0; i < dup.size(); i++) {
+    if (name == dup[i]) {
+      cout << "중복된 이름입니다." << endl;
+      cout << "------------------------------------------------------------"
+              "--------------\n";
+      // S_add_timetable_prompt();
+      return false;
+    }
+  }
+  return true;
+  }
+
+  void add_tables(string name) {
+  string filename = "timetables.txt";
+  string timetable_name = name;
+  ifstream ifile;
+  ofstream ofile;
+  char last;
+
+  ifile.seekg(-1, ios_base::end);
+  ifile.get(last);
+  ifile.close();
+
+  ofile.open(filename, ios::app);
+
+  if (!ofile.is_open()) {
+    cerr << "File Load Fail." << endl;
+    // S_main_prompt();
+  }
+
+  if (last == '\n') {
+    ofile << timetable_name << "\n";
+  } else {
+    ofile << timetable_name << "\n";
+  }
+  cout << "추가되었습니다!\n"
+       << "----------------------------------------------------------------"
+          "--"
+          "--------\n";
+  ofile.close();
+  // cout << "현재 시간표 목록" << endl;
+  // print_timetable_list();
+  }
+
+  bool S_check_file() {
+  ifstream file("timetables.txt");
+  return file.peek() == ifstream::traits_type::eof();
+  }
+
+  void S_update_main_timetable(vector<string> lines, int select_number) {
+  string selectedLine = lines[select_number - 1];
+  lines.erase(lines.begin() + select_number - 1);
+  lines.insert(lines.begin(), selectedLine);
+  ofstream outFile("timetables.txt");
+  if (outFile.is_open()) {
+    for (const string& updatedLine : lines) {
+      outFile << updatedLine << endl;
+    }
+    outFile.close();
+    cout << "변경되었습니다!" << endl;
+    } else if (!outFile.is_open()) {
+      cout << "Unable to open file" << endl;
+    }
+    cout << "----------------------------------------------------------------"
+            "--"
+            "--------"
+         << endl;
   }
