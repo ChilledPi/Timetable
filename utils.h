@@ -23,4 +23,8 @@ string read_time();
 void update_all_classes_file();
 
 bool is_addable(vector<Lecture> set, string idx);
+
+int print_timetable_list();
+
+void print_selected_timetable(int selected_line);
 #endif

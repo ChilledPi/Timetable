@@ -1,5 +1,12 @@
 #include "file_integrity.h"
 
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <set>
+#include <sstream>
+#include <string>
+#include <vector>
 #include "types.h"
 #include "utils.h"
 
@@ -275,7 +282,7 @@ void all_class_integrity() {
 void time_table_integrity() {
   fstream newfile;
   string classes;
-  newfile.open("C:\\Timetable\\timetables.txt");
+  newfile.open("timetables.txt");
   bool file_is_fuckedup = false;
   vector<string> time_name;
   while (getline(newfile, classes)) {

@@ -22,6 +22,7 @@ void A_delete_lecture_prompt() {
             "--------------\n";
 
     while (true) {
+      cout << "0) 돌아가기\n";
       print_lecture_list();
       cout << "삭제할 번호를 입력해주세요 > ";
       sel = check_num_input(all_classes_list.size());

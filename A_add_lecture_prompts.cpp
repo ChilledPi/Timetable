@@ -16,10 +16,10 @@ extern vector<Lecture> all_classes_list;
 extern vector<pair<string, string>> professor;
 extern vector<string> classrooms;
 
-bool is_digit(
-    std::string str) {  // 문자열이 숫자인지 확인, 숫자거나 0000이면 참
-  return (atoi(str.c_str()) || !str.compare("0000"));
-}
+// bool is_digit(
+//     std::string str) {  // 문자열이 숫자인지 확인, 숫자거나 0000이면 참
+//   return (atoi(str.c_str()) || !str.compare("0000"));
+// }
 
 // 학사팀(A) 강의 추가 프롬프트
 // 강의 정보들을 입력받고, 규칙 및 중복 검사
@@ -28,19 +28,19 @@ void A_add_lecture_prompt() {
   Lecture new_lecture;
 //   std::string lecture_id;
 //   std::string lecture_name;
-  std::string prof_id;
+//   std::string prof_id;
   int prof_id_index;
-  int count_prof;
+//   int count_prof;
 
   vector<tp> timeplace;
   std::string weekday;
   std::string lecture_time;
-  std::string room_id;
+//   std::string room_id;
   int room_id_index;
-  int count_room;
+//   int count_room;
 
-  std::string read_file_line;
-  int iter;
+//   std::string read_file_line;
+//   int iter;
   int check;
 
   // 강의번호 입력
@@ -130,7 +130,7 @@ void A_add_lecture_prompt() {
   }
 
   // 요일, 강의시간(교시), 강의실 입력
-  check = 0;
+//   check = 0;
   while (true) {
     tp new_tp;
     // 요일 입력
@@ -412,5 +412,5 @@ void modify_lecture(const Lecture& new_lecture) {
       find(all_classes_list.begin(), all_classes_list.end(),
            Lecture(new_lecture.num));
   *iter = new_lecture;
-  //시간표 수정
+  //파일에 쓰고
 }

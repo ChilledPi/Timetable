@@ -1,12 +1,7 @@
 #ifndef FILE_INTEGRITY_H
 #define FILE_INTEGRITY_H
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <sstream>
 #include <string>
 #include <vector>
-#include <set>
 #include "types.h"
 
 void all_class_integrity();

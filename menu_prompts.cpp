@@ -16,7 +16,7 @@ void menu_prompt(){
     if (sel == 1) {
       A_lecture_management_prompt();
     } else if (sel == 2) {
-    //   student_lecture_management_prompt();
+      S_main_prompt();
     } else if(sel == 0){
       return;
     }
