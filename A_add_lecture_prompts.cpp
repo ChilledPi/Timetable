@@ -241,7 +241,16 @@ void A_add_lecture_prompt() {
     // temp.time = lecture_time;
     // temp.classroom = classrooms[room_id_index - 1];
 
-    timeplace.push_back(new_tp);
+    if(is_expendable(timeplace, new_tp.day, new_tp.time)){
+      timeplace.push_back(new_tp);
+    }else{
+      std::cout << "! 요일/시간이 겹칩니다."
+                << std::endl;
+      std::cout
+          << "------------------------------------------------------------"
+             "--------------\n";
+      continue;
+    }
 
     // if (!A_check_crosscheck()) {
     //   std::cout << "1) 예" << std::endl
@@ -408,9 +417,10 @@ void modify_lecture(const Lecture& new_lecture) {
   // 2. 자료마다 하나하나 대입
   // 3. tp는 반복문돌면서 대입
   // 4. 학생이 넣은 강의는 삭제
+
   vector<Lecture>::iterator iter =
       find(all_classes_list.begin(), all_classes_list.end(),
            Lecture(new_lecture.num));
   *iter = new_lecture;
-  //파일에 쓰고
+  remove_lecture_in_timetable(new_lecture.num);
 }

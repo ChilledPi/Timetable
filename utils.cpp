@@ -415,8 +415,8 @@ bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
       if (lineNumber == selected_line) {
         replace(line.begin(), line.end(), '\t', '/');
         cout << line << endl;
-        lineNumber++;
       }
+      lineNumber++;
     }
     return;
   } else {
@@ -512,4 +512,45 @@ bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
             "--"
             "--------"
          << endl;
+  }
+
+  vector<vector<string>> get_all_timetables(){
+    vector<vector<string>> all_timetables;
+    string str;
+    string token;
+    ifstream file("timetables.txt");
+
+    while (getline(file, str)) {
+      istringstream iss(str);
+      vector<string> temp;
+      while (getline(iss, token, '\t')) {
+      temp.push_back(token);
+      }
+      all_timetables.push_back(temp);
+    }
+    return all_timetables;
+  }
+
+  void remove_lecture_in_timetable(string num) {
+    vector<vector<string>> all_timetables = get_all_timetables();
+    ofstream file("timetables.txt");
+
+    for (int i = 0; i < all_timetables.size(); i++) {
+      for (int j = 0; j < all_timetables[i].size(); j++) {
+      if (all_timetables[i][j] == num) {
+        all_timetables[i].erase(all_timetables[i].begin() + j);
+      }
+      }
+    }
+
+    for (int i = 0; i < all_timetables.size(); i++) {
+      for (int j = 0; j < all_timetables[i].size(); j++) {
+      file << all_timetables[i][j];
+      if (j == all_timetables[i].size() - 1) {
+        file << '\n';
+      } else {
+        file << '\t';
+      }
+      }
+    }
   }

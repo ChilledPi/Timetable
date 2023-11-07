@@ -34,4 +34,8 @@ void add_tables(string name);
 
 bool S_check_file();
 
+vector<vector<string>> get_all_timetables();
+
+void remove_lecture_in_timetable(string num);
+
 #endif

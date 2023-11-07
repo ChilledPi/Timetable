@@ -36,6 +36,7 @@ void A_delete_lecture_prompt() {
                << "정말 삭제하시겠습니까? > ";
           sel = check_num_input(1);
           if (sel == 1) {
+            remove_lecture_in_timetable(iter->num);
             all_classes_list.erase(iter);
             cout << "삭제가 완료되었습니다.\n"
                  << "----------------------------------------------------------"

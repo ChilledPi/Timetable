@@ -10,10 +10,9 @@
 extern vector<Lecture> all_classes_list;
 
 void S_delete_lecture_prompt(int selected_line){
-
+  ifstream file("timetables.txt");
   int sel, lines;
   string str;
-  ifstream file("timetables.txt");
   vector<Lecture> selected_timetable;
 
   lines = 1;
@@ -31,6 +30,7 @@ void S_delete_lecture_prompt(int selected_line){
     }
     lines++;
   }
+
   while (true) {
     if (selected_timetable.empty()) {
       cout << "! 삭제할 강의가 존재하지 않습니다.\n"
@@ -56,11 +56,35 @@ void S_delete_lecture_prompt(int selected_line){
     sel = check_num_input(selected_timetable.size());
 
     if(sel > 0){
+      vector<vector<string>> all_timetables = get_all_timetables();
+      for(auto i : all_timetables){
+        for (auto j : i){
+          cout << j;
+        }
+        cout << '\n';
+      }
+      ofstream file("timetables.txt");
+      for (int i = 0; i < all_timetables.size(); i++) {
+        if (i + 1 == selected_line){
+            all_timetables[i].erase(find(all_timetables[i].begin(), all_timetables[i].end(), selected_timetable[sel-1].num));
+        }
+      }
+
       selected_timetable.erase(find(selected_timetable.begin(),
                                     selected_timetable.end(),
                                     Lecture(selected_timetable[sel - 1].num)));
+
+      for (int i = 0; i < all_timetables.size(); i++) {
+        for (int j = 0; j < all_timetables[i].size(); j++) {
+          file << all_timetables[i][j];
+          if (j == all_timetables[i].size() - 1) {
+            file << '\n';
+          } else {
+            file << '\t';
+          }
+        }
+      }
     } else if (sel == 0) {
-      // 파일에 쓰고
       return;
     }
   }
