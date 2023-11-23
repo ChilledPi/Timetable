@@ -1,8 +1,10 @@
+#include "A_delete_lecture_prompts.h"
+
+#include <algorithm>
+#include <iostream>
+
 #include "types.h"
 #include "utils.h"
-#include "A_delete_lecture_prompts.h"
-#include <iostream>
-#include <algorithm>
 
 extern vector<Lecture> all_classes_list;
 
@@ -51,10 +53,10 @@ void A_delete_lecture_prompt() {
             break;
           }
         }
-        if(sel == 1){
+        if (sel == 1) {
           break;
         }
-      } else if(sel == 0){
+      } else if (sel == 0) {
         return;
       }
     }
@@ -67,7 +69,8 @@ void A_delete_lecture_prompt() {
     //   if (sel == 1) {
     //     all_classes_list.erase(iter);
     //     cout << "삭제가 완료되었습니다.\n"
-    //          << "------------------------------------------------------------"
+    //          <<
+    //          "------------------------------------------------------------"
     //             "--------------\n";
     //     break;
     //   } else if(sel == 0){

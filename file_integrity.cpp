@@ -219,65 +219,6 @@ void all_class_integrity() {
   }
 }
 
-// void time_table_integrity() {
-//   fstream newfile;
-//   string classes;
-//   newfile.open("timetables.txt");
-//   bool file_is_fuckedup = false;
-//   while (getline(newfile, classes)) {
-//     string num;
-//     istringstream ss(classes);
-//     int a = 0;
-//     vector<string> time_name;
-//     bool is_fuckedup = false
-// cout << "1";
-//     string last = "";
-//     last += classes.back();
-//     if (classes == "" || last == "\t") {
-//       is_fuckedup = true;
-//     }
-//     vector<Lecture> temp;
-//     while (getline(ss, num, '\t')) {
-//       if (a == 0) {
-//         for (int i = 0; i < time_name.size(); i++) {
-//           if (num == time_name.at(i) || check_name(num) == -1) {
-//             is_fuckedup = true;
-//             break;
-//           }
-//         }
-//         time_name.push_back(num);
-//       } else {
-//         bool exist = false;
-//         for (int i = 0; i < all_classes_list.size(); i++) {
-//           if (all_classes_list.at(i).num == num) {
-//             exist = true;
-//           }
-//         }
-//         if (exist == false) {
-//           is_fuckedup = true;
-//           break;
-//         }
-//         if (!temp.empty()) {
-//           if (is_addable(temp, num)) {
-//             Lecture temp2;
-//             temp2.num = num;
-//             temp.push_back(temp2);
-//           } else {
-//             is_fuckedup = true;
-//           }
-//         }
-//       }
-//       a++;
-//     }
-//     if (is_fuckedup) {
-//       cout << classes << endl;
-//       file_is_fuckedup = true;
-//     }
-//   }
-//   if (file_is_fuckedup == true) {
-//     abort();
-//   }
-// }
 
 void time_table_integrity() {
   fstream newfile;
@@ -419,13 +360,6 @@ void check_file() {
     cout << "오류: 홈 경로" << home_path
          << "에 Professor_list 데이터 파일이 없습니다." << endl;
     abort();
-    // cout << "홈 경로에 빈 데이터 파일을 새로 생성했습니다:" << endl;
-    // cout << home_path << "\\Professor_list.txt" << endl;
-    // exist = false;
-    // ofstream class_file("Professor_list.txt");
-    // if (stat("C:\\Timetable\\Professor_list.txt", &sb) != 0) {
-    //   abort();
-    // }
   } else {
     professor_list_integrity();
   }
@@ -434,13 +368,6 @@ void check_file() {
     cout << "오류: 홈 경로" << home_path
          << "에 Classroom_list 데이터 파일이 없습니다." << endl;
     abort();
-    // cout << "홈 경로에 빈 데이터 파일을 새로 생성했습니다:" << endl;
-    // exist = false;
-    // cout << home_path << "\\Classroom_list.txt " << endl;
-    // ofstream class_file("Classroom_list.txt");
-    // if (stat("C:\\Timetable\\Classroom_list.txt", &sb) != 0) {
-    //   abort();
-    // }
   } else {
     classroom_list_integrity();
   }
@@ -454,9 +381,6 @@ void check_file() {
     }
     cout << home_path << "\\allclasses.txt" << endl;
     ofstream class_file("allclasses.txt");
-    // if (stat("C:\\Timetable\\allclasses.txt", &sb) != 0) {
-    //   abort();
-    // }
   } else {
     all_class_integrity();
   }
@@ -468,9 +392,6 @@ void check_file() {
     }
     cout << home_path << "\\timetables.txt" << endl;
     ofstream class_file("timetables.txt");
-    // if (stat("C:\\Timetable\\timetables.txt", &sb) != 0) {
-    //   abort();
-    // }
   } else {
     time_table_integrity();
   }

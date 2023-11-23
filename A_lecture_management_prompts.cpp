@@ -17,7 +17,7 @@ void A_lecture_management_prompt() {
          << "B07 Timetable: menu > ";
     sel = check_num_input(2);
     if (sel == 1) {
-      A_add_lecture_prompt();
+      // A_add_lecture_prompt();
     } else if (sel == 2) {
       A_delete_lecture_prompt();
     } else if(sel == 0){

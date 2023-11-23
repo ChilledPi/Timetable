@@ -20,13 +20,12 @@ class Lecture{
     public:
      string num;
      string name;
-     string professor_id;
+     vector<string> professor_id_list;
      vector<tp> tp_list;
+     string credit;
 
      Lecture(){};
      Lecture(string num_): num(num_){}
-     Lecture(string num_, string name_, string professor_id_)
-         : num(num_), name(name_), professor_id(professor_id_) {}
 
      bool operator<(const Lecture& rhs) const { return num < rhs.num; }
      bool operator==(const Lecture& rhs) const { return num == rhs.num; }

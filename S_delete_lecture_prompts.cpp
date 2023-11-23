@@ -42,8 +42,22 @@ void S_delete_lecture_prompt(int selected_line){
     cout << "0) 삭제 중단\n";
     sort(selected_timetable.begin(), selected_timetable.end());
     for (int i = 0; i < selected_timetable.size(); i++) {
-      cout << i + 1 << ") " << selected_timetable[i].name << ' ' << selected_timetable[i].num
-           << ' ';
+      vector<int> count(all_classes_list.size());
+      int s = find(all_classes_list.begin(), all_classes_list.end(),
+                   Lecture(selected_timetable[i])) -
+              all_classes_list.begin();
+      for (int j = s; j < all_classes_list.size(); j++) {
+        if (all_classes_list[i].name == all_classes_list[j].name) {
+          if (count[i] == 0) {
+            count[i] = 1;
+          }
+          count[j] = count[i] + 1;
+          break;
+        }
+      }
+      cout << i + 1 << ") " << selected_timetable[i].name << ' ';
+      if (count[s]) cout << count[s] << ' ';
+      cout << selected_timetable[i].num << ' ';
       for (tp j : selected_timetable[i].tp_list) {
         cout << j.day << j.time << ' ';
       }

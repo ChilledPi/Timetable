@@ -13,10 +13,21 @@ extern vector<Lecture> all_classes_list;
 void print_lecture_list() { // 어디까지 출력할 지 정하기
   sort(all_classes_list.begin(), all_classes_list.end());
   for (int i = 0; i < all_classes_list.size(); i++) {
-    cout << i + 1 << ") " << all_classes_list[i].name << ' '
-         << all_classes_list[i].num << ' ';
-         for(tp j : all_classes_list[i].tp_list){
-           cout << j.day << j.time << ' ';
+    vector<int> count(all_classes_list.size());
+    for(int j = i; j < all_classes_list.size(); j++){
+      if (all_classes_list[i].name == all_classes_list[j].name){
+        if(count[i] == 0){
+          count[i] = 1;
+        }
+        count[j] = count[i] + 1;
+        break;
+      }
+    }
+    cout << i + 1 << ") " << all_classes_list[i].name << ' ';
+    if (count[i]) cout << count[i] << ' ';
+    cout << all_classes_list[i].num << ' ';
+    for (tp j : all_classes_list[i].tp_list) {
+      cout << j.day << j.time << ' ';
          }
          cout << '\n';
   }
@@ -152,7 +163,8 @@ string read_time() {
   if (sel == 0) {
     return ret;
   } else if(sel == -1) {
-    cout << "! 강의 시간은 요일(0~4) + 시작 교시(01~17) + 끝 교시로(02~18) 구성됩니다.\n"  // 오류 메세지
+    cout << "! 강의 시간은 요일(0~4) + 시작 교시(00~19) + 끝 교시로(00~19) "
+            "구성됩니다.\n"  // 오류 메세지
          << "------------------------------------------------------------"
             "--------------\n";
     return "";
@@ -162,6 +174,14 @@ string read_time() {
             "--------------\n";
     return "";
   }
+}
+
+int check_credit(string credit) {
+  regex re("^[1-3]$");
+  if (regex_match(credit, re)) {
+    return 0;
+  }
+  return -1;
 }
 
 void update_all_classes_file() {
@@ -176,7 +196,14 @@ void update_all_classes_file() {
       if (j == (all_classes_list[i].tp_list.size() - 1)) ofs << '\t';
       else ofs << ' ';
     }
-    ofs << all_classes_list[i].professor_id << '\n';
+    for (int j = 0; j < all_classes_list[i].professor_id_list.size(); j++) {
+      ofs << all_classes_list[i].professor_id_list[j];
+      if (j == (all_classes_list[i].professor_id_list.size() - 1))
+        ofs << '\t';
+      else
+        ofs << ' ';
+    }
+    ofs << all_classes_list[i].credit << '\n';
   }
 }
 
@@ -220,169 +247,11 @@ bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
 
   return true;
 }
-  // bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
-
-  //     if (temp.empty()) {
-  //         return true;
-  //     }
-  //     Lecture temp2;
-  //     for (int i = 0; i < all_classes_list.size(); i++) {
-  //         if (all_classes_list.at(i).num == selectedLectureIndex) {
-  //             temp2 = all_classes_list.at(i);
-  //         }
-  //     }
-
-  //     for (int i = 0; i < temp.size(); i++) {
-  //         Lecture temp3;
-  //         for (int j = 0; j < all_classes_list.size(); j++) {
-  //             if (all_classes_list.at(j).num == temp.at(i).num) {
-  //                 temp3 = all_classes_list.at(j);
-  //             }
-  //         }
-  //         for (int j = 0; j < temp2.tp_list.size(); j++) {
-  //             for (int k = 0; k < temp3.tp_list.size(); k++) {
-  //                 if (temp2.tp_list.at(j).day == temp3.tp_list.at(k).day) {
-  //                     int t2 = stoi(temp2.tp_list.at(j).time);
-  //                     int t3 = stoi(temp3.tp_list.at(k).time);
-  //                     int t22 = t2 / 100;
-  //                     t2 %= 100;
-  //                     int t33 = t3 / 100;
-  //                     t3 %= 100;
-  //                     if ((t33 >= t22 && t33 <= t2) || (t22 >= t33 && t22 <=
-  //                     t3)) {
-  //                         return false;
-  //                     }
-  //                 }
-  //             }
-  //         }
-  //         if(temp2.name == temp3.name) {
-  //                return false;
-  //          }
-  //     }
-
-  //     return true;
-
-  // bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
-
-  //     if (temp.empty()) {
-  //         return true;
-  //     }
-  //     Lecture temp2;
-  //     for (int i = 0; i < all_classes_list.size(); i++) {
-  //         if (all_classes_list.at(i).num == selectedLectureIndex) {
-  //             temp2 = all_classes_list.at(i);
-  //         }
-  //     }
-
-  //     for (int i = 0; i < temp.size(); i++) {
-  //         Lecture temp3;
-  //         for (int j = 0; j < all_classes_list.size(); j++) {
-  //             if (all_classes_list.at(j).num == temp.at(i).num) {
-  //                 temp3 = all_classes_list.at(j);
-  //             }
-  //         }
-  //         for (int j = 0; j < temp2.tp_list.size(); j++) {
-  //             for (int k = 0; k < temp3.tp_list.size(); k++) {
-  //                 if (temp2.tp_list.at(j).day == temp3.tp_list.at(k).day) {
-  //                     int t2 = stoi(temp2.tp_list.at(j).time);
-  //                     int t3 = stoi(temp3.tp_list.at(k).time);
-  //                     int t22 = t2 / 100;
-  //                     t2 %= 100;
-  //                     int t33 = t3 / 100;
-  //                     t3 %= 100;
-  //                     if ((t33 >= t22 && t33 <= t2) || (t22 >= t33 && t22 <=
-  //                     t3)) {
-  //                         return false;
-  //                     }
-  //                 }
-  //             }
-  //         }
-  //         if(temp2.name == temp3.name) {
-  //                return false;
-  //          }
-  //     }
-
-  //     return true;
-  // }
-
-  // bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
-  //   if (temp.empty()) {
-  //     return true;
-  //   }
-  //   Lecture temp2;
-  //   for (int i = 0; i < all_classes_list.size(); i++) {
-  //     if (all_classes_list.at(i).num == selectedLectureIndex) {
-  //       temp2 = all_classes_list.at(i);
-  //     }
-  //   }
-
-  //   for (int i = 0; i < temp.size(); i++) {
-  //     Lecture temp3;
-  //     for (int j = 0; j < all_classes_list.size(); j++) {
-  //       if (all_classes_list.at(j).num == temp.at(i).num) {
-  //         temp3 = all_classes_list.at(j);
-  //       }
-  //     }
-  //     for (int j = 0; j < temp2.tp_list.size(); j++) {
-  //       for (int k = 0; k < temp3.tp_list.size(); k++) {
-  //         if (temp2.tp_list.at(j).day == temp3.tp_list.at(k).day) {
-  //           int t2 = stoi(temp2.tp_list.at(i).time);
-  //           int t3 = stoi(temp3.tp_list.at(j).time);
-  //           int t22 = t2 / 100;
-  //           t2 %= 100;
-  //           int t33 = t3 / 100;
-  //           t3 %= 100;
-  //           if ((t33 >= t22 && t33 <= t2) || (t22 >= t33 && t22 <= t3)) {
-  //             return false;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   return true;
-  // }
-
-  // bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
-  //   if (temp.empty()) {
-  //     return true;
-  //   }
-  //   Lecture temp2;
-  //   for (int i = 0; i < all_classes_list.size(); i++) {
-  //     if (all_classes_list.at(i).num == selectedLectureIndex) {
-  //       temp2 = all_classes_list.at(i);
-  //     }
-  //   }
-  //   for (int i = 0; i < temp.size(); i++) {
-  //     Lecture temp3;
-  //     for (int j = 0; j < all_classes_list.size(); i++) {
-  //       if (temp.at(i).num == all_classes_list.at(j).num) {
-  //         temp3 = all_classes_list.at(j);
-  //       }
-  //     }
-  //     for (int j = 0; j < temp3.tp_list.size(); j++) {
-  //       for (int k = 0; k < temp2.tp_list.size(); k++) {
-  //         if (temp2.tp_list.at(k).day == temp3.tp_list.at(j).day) {
-  //           int t2 = stoi(temp2.tp_list.at(k).time);
-  //           int t3 = stoi(temp3.tp_list.at(j).time);
-  //           int t22 = t2 / 100;
-  //           t2 %= 100;
-  //           int t33 = t3 / 100;
-  //           t3 %= 100;
-  //           if ((t33 >= t22 && t33 <= t2) || (t22 >= t33 && t22 <= t3)) {
-  //             return false;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return true;
-  // }
 
   Lecture& Lecture::operator=(const Lecture& rhs) {
     num = rhs.num;
     name = rhs.name;
-    professor_id = rhs.professor_id;
+    professor_id_list = rhs.professor_id_list;
     tp_list = rhs.tp_list;
     return *this;
   }
