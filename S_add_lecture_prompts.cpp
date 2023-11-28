@@ -36,13 +36,12 @@ void S_add_lecture_prompt(int selected_line) {
   }
 
   while (true) {
+    print_selected_timetable(selected_line);
     cout << "0) 삽입 중단\n";
-    sort(copy_list.begin(), copy_list.end());
+
     vector<int> count(all_classes_list.size());
-    for (int i = 0; i < copy_list.size(); i++) {
-      int s = find(all_classes_list.begin(), all_classes_list.end(),
-           Lecture(copy_list[i])) - all_classes_list.begin();
-      for (int j = s + 1; j < all_classes_list.size(); j++) {
+    for (int i = 0; i < all_classes_list.size(); i++){
+      for (int j = i + 1; j < all_classes_list.size(); j++) {
         if (all_classes_list[i].name == all_classes_list[j].name) {
           if (count[i] == 0) {
             count[i] = 1;
@@ -51,6 +50,11 @@ void S_add_lecture_prompt(int selected_line) {
           break;
         }
       }
+    }
+      sort(copy_list.begin(), copy_list.end());
+    for (int i = 0; i < copy_list.size(); i++) {
+      int s = find(all_classes_list.begin(), all_classes_list.end(),
+           Lecture(copy_list[i])) - all_classes_list.begin();
       cout << i + 1 << ") " << copy_list[i].name << ' ';
       if (count[s]) cout << count[s] << ' ';
       cout << copy_list[i].num << ' ';
@@ -74,6 +78,8 @@ void S_add_lecture_prompt(int selected_line) {
         for (int i = 0; i < all_timetables.size(); i++) {
           if (i + 1 == selected_line) {
             all_timetables[i].push_back(copy_list[sel - 1].num);
+            sort(all_timetables[i].begin() + 1, all_timetables[i].end());
+            break;
           }
         }
 

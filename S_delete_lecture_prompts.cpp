@@ -39,14 +39,11 @@ void S_delete_lecture_prompt(int selected_line){
       return;
     }
 
+    print_selected_timetable(selected_line);
     cout << "0) 삭제 중단\n";
-    sort(selected_timetable.begin(), selected_timetable.end());
     vector<int> count(all_classes_list.size());
-    for (int i = 0; i < selected_timetable.size(); i++) {
-      int s = find(all_classes_list.begin(), all_classes_list.end(),
-                   Lecture(selected_timetable[i])) -
-              all_classes_list.begin();
-      for (int j = s + 1; j < all_classes_list.size(); j++) {
+    for (int i = 0; i < all_classes_list.size(); i++){
+      for (int j = i + 1; j < all_classes_list.size(); j++) {
         if (all_classes_list[i].name == all_classes_list[j].name) {
           if (count[i] == 0) {
             count[i] = 1;
@@ -55,6 +52,13 @@ void S_delete_lecture_prompt(int selected_line){
           break;
         }
       }
+    }
+
+      sort(selected_timetable.begin(), selected_timetable.end());
+    for (int i = 0; i < selected_timetable.size(); i++) {
+      int s = find(all_classes_list.begin(), all_classes_list.end(),
+                   Lecture(selected_timetable[i])) -
+              all_classes_list.begin();
       cout << i + 1 << ") " << selected_timetable[i].name << ' ';
       if (count[s]) cout << count[s] << ' ';
       cout << selected_timetable[i].num << ' ';
@@ -71,12 +75,6 @@ void S_delete_lecture_prompt(int selected_line){
 
     if(sel > 0){
       vector<vector<string>> all_timetables = get_all_timetables();
-      for(auto i : all_timetables){
-        for (auto j : i){
-          cout << j;
-        }
-        cout << '\n';
-      }
       ofstream file("timetables.txt");
       for (int i = 0; i < all_timetables.size(); i++) {
         if (i + 1 == selected_line){

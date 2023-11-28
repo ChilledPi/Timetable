@@ -6,9 +6,7 @@
 void S_lecture_management_prompt(){
   fstream file("timetables.txt");
   int sel, lines, selected_line;
-  cout << "----------------------------------------------------------------"
-          "----------\n"
-       << "시간표 존재 여부를 확인합니다.\n";
+  cout << "시간표 존재 여부를 확인합니다.\n";
   if (file.peek() == ifstream::traits_type::eof()) {
     cout << "! 시간표가 존재하지 않습니다!\n"
          << "----------------------------------------------------------------"
