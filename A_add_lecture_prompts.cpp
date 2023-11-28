@@ -120,17 +120,17 @@ void A_add_lecture_prompt() {
       continue;
     }
 
-    if (!prof_is_addable(professor[prof_id_index - 1].first, timeplace) &&
-        find(all_classes_list.begin(), all_classes_list.end(),
-             Lecture(new_lecture.num)) ==
-            all_classes_list.end()) {  // 교강사 역시 마찬가지
-      std::cout << "! 해당 요일/시간에 해당 교강사가 이미 강의중입니다."
-                << std::endl;
-      std::cout
-          << "------------------------------------------------------------"
-             "--------------\n";
-      continue;
-    }
+    // if (!prof_is_addable(professor[prof_id_index - 1].first, timeplace) &&
+    //     find(all_classes_list.begin(), all_classes_list.end(),
+    //          Lecture(new_lecture.num)) ==
+    //         all_classes_list.end()) {  // 교강사 역시 마찬가지
+    //   std::cout << "! 해당 요일/시간에 해당 교강사가 이미 강의중입니다."
+    //             << std::endl;
+    //   std::cout
+    //       << "------------------------------------------------------------"
+    //          "--------------\n";
+    //   continue;
+    // }
 
     int sel;
     while (true) {

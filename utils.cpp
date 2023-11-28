@@ -12,9 +12,9 @@ extern vector<Lecture> all_classes_list;
 
 void print_lecture_list() { // 어디까지 출력할 지 정하기
   sort(all_classes_list.begin(), all_classes_list.end());
+  vector<int> count(all_classes_list.size());
   for (int i = 0; i < all_classes_list.size(); i++) {
-    vector<int> count(all_classes_list.size());
-    for(int j = i; j < all_classes_list.size(); j++){
+    for(int j = i + 1; j < all_classes_list.size(); j++){
       if (all_classes_list[i].name == all_classes_list[j].name){
         if(count[i] == 0){
           count[i] = 1;
@@ -176,12 +176,12 @@ string read_time() {
   }
 }
 
-int check_credit(string credit) {
+bool check_credit(string credit) {
   regex re("^[1-3]$");
   if (regex_match(credit, re)) {
-    return 0;
+    return true;
   }
-  return -1;
+  return false;
 }
 
 void update_all_classes_file() {
@@ -228,15 +228,8 @@ bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
     for (int j = 0; j < temp2.tp_list.size(); j++) {
       for (int k = 0; k < temp3.tp_list.size(); k++) {
         if (temp2.tp_list.at(j).day == temp3.tp_list.at(k).day) {
-          int t2 = stoi(temp2.tp_list.at(j).time);
-          int t3 = stoi(temp3.tp_list.at(k).time);
-          int t22 = t2 / 100;
-          t2 %= 100;
-          int t33 = t3 / 100;
-          t3 %= 100;
-          if ((t33 >= t22 && t33 <= t2) || (t22 >= t33 && t22 <= t3)) {
-            return false;
-          }
+          return compare_time(temp2.tp_list.at(j).time,
+                              temp3.tp_list.at(k).time);
         }
       }
     }
@@ -422,4 +415,23 @@ bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
       }
       }
     }
+  }
+
+  bool compare_time(string time1, string time2) {
+    int a = stoi(time1);
+    int b = stoi(time2);
+    int aa = a % 100;
+    int bb = b % 100;
+    a /= 100;
+    b /= 100;
+    if (a == 19) {
+      a = -1;
+    }
+    if (b == 19) {
+      b = -1;
+    }
+    if ((bb >= a && b <= a) || (aa >= b && a <= b)) {
+      return false;
+    }
+    return true;
   }

@@ -38,11 +38,11 @@ void S_add_lecture_prompt(int selected_line) {
   while (true) {
     cout << "0) 삽입 중단\n";
     sort(copy_list.begin(), copy_list.end());
+    vector<int> count(all_classes_list.size());
     for (int i = 0; i < copy_list.size(); i++) {
-      vector<int> count(all_classes_list.size());
       int s = find(all_classes_list.begin(), all_classes_list.end(),
            Lecture(copy_list[i])) - all_classes_list.begin();
-      for (int j = s; j < all_classes_list.size(); j++) {
+      for (int j = s + 1; j < all_classes_list.size(); j++) {
         if (all_classes_list[i].name == all_classes_list[j].name) {
           if (count[i] == 0) {
             count[i] = 1;

@@ -20,7 +20,7 @@ int check_num(string num);
 string read_num();
 int check_time(string time);
 string read_time();
-int check_credit(string credit);
+bool check_credit(string credit);
 
 void update_all_classes_file();
 
@@ -39,5 +39,7 @@ bool S_check_file();
 vector<vector<string>> get_all_timetables();
 
 void remove_lecture_in_timetable(string num);
+
+bool compare_time(string time1, string time2);
 
 #endif
