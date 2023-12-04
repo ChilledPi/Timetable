@@ -42,4 +42,6 @@ void remove_lecture_in_timetable(string num);
 
 bool compare_time(string time1, string time2);
 
+int getTotalCreditsForTimetable(int selected_line);
+
 #endif

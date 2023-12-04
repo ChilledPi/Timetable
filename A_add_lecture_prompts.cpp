@@ -63,7 +63,7 @@ void A_add_lecture_prompt() {
     }
   }
 
-  // 요일, 강의시간(교시), 강의실 입력
+// 요일, 강의시간(교시), 강의실 입력
 //   check = 0;
   while (true) {
     tp new_tp;

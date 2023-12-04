@@ -276,7 +276,9 @@ bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
     while (getline(file, line)) {
       if (lineNumber == selected_line) {
         replace(line.begin(), line.end(), '\t', '/');
-        cout << line << endl;
+        cout << line
+             << " 총학점: " << getTotalCreditsForTimetable(selected_line)
+             << '\n';
       }
       lineNumber++;
     }
@@ -285,6 +287,19 @@ bool is_addable(vector<Lecture> temp, string selectedLectureIndex) {
     cout << "Unable to open file";
     return;
   }
+  }
+
+  int getTotalCreditsForTimetable(int selected_line) {
+    int totalCredits = 0;
+    vector<vector<string>> all_timetables = get_all_timetables();
+    for (int i = 0; i < all_timetables[selected_line - 1].size(); i++) {
+      if (i)
+        totalCredits +=
+            stoi(find(all_classes_list.begin(), all_classes_list.end(),
+                      Lecture(all_timetables[selected_line - 1][i]))
+                     ->credit);
+    }
+    return totalCredits;
   }
 
   bool name_duplication(string name) {

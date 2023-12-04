@@ -68,8 +68,13 @@ void S_add_lecture_prompt(int selected_line) {
             "--------\n"
          << "시간표에 추가할 강의를 선택해주세요 > ";
     sel = check_num_input(copy_list.size());
+
     if (sel > 0) {
-      if (is_addable(selected_timetable,
+      if (getTotalCreditsForTimetable(selected_line) +
+              stoi(copy_list[sel - 1].credit) >
+          18) {
+        cout << "! 학점 상한을 초과하였습니다!\n";
+      }else if (is_addable(selected_timetable,
                      find(all_classes_list.begin(), all_classes_list.end(),
                           copy_list[sel - 1])
                          ->num)) {
