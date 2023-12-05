@@ -44,4 +44,10 @@ bool compare_time(string time1, string time2);
 
 int getTotalCreditsForTimetable(int selected_line);
 
+bool prof_integrity();
+
+bool brute(vector<vector<string>> pro);
+
+bool name_dup(vector<Lecture> num, Lecture);
+
 #endif

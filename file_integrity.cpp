@@ -291,6 +291,23 @@ void all_class_integrity() {
 //   }
 // }
 
+bool name_dup(vector<Lecture> num, Lecture num2) {
+  for (int i = 0; i < all_classes_list.size(); i++) {
+    if (num2.num == all_classes_list.at(i).num) {
+      for (int j = 0; j < num.size(); j++) {
+        for (int k = 0; k < all_classes_list.size(); k++) {
+          if (num.at(j).num == all_classes_list.at(k).num) {
+            if (all_classes_list.at(i).name == all_classes_list.at(k).name) {
+              return false;
+            }
+          }
+        }
+      }
+    }
+  }
+  return true;
+}
+
 void time_table_integrity() {
   fstream newfile;
   string classes;
@@ -320,6 +337,7 @@ void time_table_integrity() {
         time_name.push_back(num);
       } else {
         bool exist = false;
+        int j;
         for (int i = 0; i < all_classes_list.size(); i++) {
           if (all_classes_list.at(i).num == num) {
             exist = true;
@@ -330,10 +348,14 @@ void time_table_integrity() {
           is_fuckedup = true;
           break;
         }
-        Lecture temp2;
-        temp2.num = num;
         if (!is_addable(temp, num)) {
           is_fuckedup = true;
+        }
+        Lecture temp2;
+        temp2.num = num;
+        if (!name_dup(temp, temp2)) {
+          is_fuckedup = true;
+          break;
         }
         temp.push_back(temp2);
       }
@@ -344,11 +366,6 @@ void time_table_integrity() {
       file_is_fuckedup = true;
     }
   }
-
-  if (!prof_integrity()) {
-    file_is_fuckedup = true;
-  }
-
   if (file_is_fuckedup == true) {
     // cout << "2";
     abort();
@@ -495,45 +512,6 @@ void check_file() {
   }
 }
 
-bool brute(vector<vector<string>> pro) {
-  if (pro.size() == 0) return true;
-  vector<string> list;
-  int i = 0, j = 0;
-  while (true) {
-    if (find(list.begin(), list.end(), pro.at(i).at(j)) == list.end()) {
-      if (i == list.size()) {
-        list.push_back(pro.at(i).at(j));
-        if (list.size() == pro.size()) {
-          return true;
-        }
-      } else {
-        list.erase(list.begin() + list.size() - 1);
-        list.push_back(pro.at(i).at(j));
-        i++;
-      }
-      i++, j = 0;
-    } else {
-      if (j < pro.at(i).size() - 1) {
-        j++;
-      } else {
-        if (list.size() > i) {
-          list.erase(list.begin() + list.size() - 1);
-        }
-        i--;
-        if (i == -1) {
-          return false;
-        }
-        for (int k = 0; k < pro.at(i).size(); k++) {
-          if (list.at(list.size() - 1) == pro.at(i).at(k)) {
-            j = k;
-          }
-        }
-      }
-    }
-  }
-  return true;
-}
-
 bool prof_integrity() {
   typedef struct Lec {
     string num;
@@ -571,6 +549,44 @@ bool prof_integrity() {
       }
       if (brute(pro) == false) {
         return false;
+      }
+    }
+  }
+  return true;
+}
+
+bool brute(vector<vector<string>> pro) {
+  if (pro.size() == 0) return true;
+  vector<string> list;
+  int i = 0, j = 0;
+  while (true) {
+    if (find(list.begin(), list.end(), pro.at(i).at(j)) == list.end()) {
+      if (i == list.size()) {
+        list.push_back(pro.at(i).at(j));
+        if (list.size() == pro.size()) {
+          return true;
+        }
+      } else {
+        list.erase(list.begin() + list.size() - 1);
+        list.push_back(pro.at(i).at(j));
+      }
+      i = list.size(), j = 0;
+    } else {
+      if (j < pro.at(i).size() - 1) {
+        j++;
+      } else {
+        if (list.size() > i) {
+          list.erase(list.begin() + list.size() - 1);
+        }
+        i--;
+        if (i == -1) {
+          return false;
+        }
+        for (int k = 0; k < pro.at(i).size(); k++) {
+          if (list.at(list.size() - 1) == pro.at(i).at(k)) {
+            j = k;
+          }
+        }
       }
     }
   }

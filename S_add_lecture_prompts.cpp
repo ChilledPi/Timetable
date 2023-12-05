@@ -74,10 +74,11 @@ void S_add_lecture_prompt(int selected_line) {
               stoi(copy_list[sel - 1].credit) >
           18) {
         cout << "! 학점 상한을 초과하였습니다!\n";
-      }else if (is_addable(selected_timetable,
-                     find(all_classes_list.begin(), all_classes_list.end(),
-                          copy_list[sel - 1])
-                         ->num)) {
+      } else if (is_addable(selected_timetable,
+                            find(all_classes_list.begin(),
+                                 all_classes_list.end(), copy_list[sel - 1])
+                                ->num) &&
+                 name_dup(selected_timetable, copy_list[sel - 1])) {
         vector<vector<string>> all_timetables = get_all_timetables();
         ofstream file("timetables.txt");
         for (int i = 0; i < all_timetables.size(); i++) {
