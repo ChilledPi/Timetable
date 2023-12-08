@@ -182,6 +182,7 @@ void A_add_lecture_prompt() {
       // new_lecture 초기화 ?
       continue;
     }
+    all_classes_list.pop_back();
 
     // 학점 입력
     while (true) {
