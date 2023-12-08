@@ -21,14 +21,14 @@ extern vector<string> classrooms;
 // 이후 강의번호의 존재 여부에 따라 수정 혹은 추가
 
 void A_add_lecture_prompt() {
-  Lecture new_lecture;
-  vector<tp> timeplace;
+  string num, name;
+  // Lecture new_lecture;
   string input_credit;
 
   // 강의번호 입력
   while (true) {
     std::cout << "추가할 강의번호를 입력해주세요 > ";
-    if ((new_lecture.num = read_num()) != "") {
+    if ((num = read_num()) != "") {
       break;
     }
   }
@@ -36,7 +36,7 @@ void A_add_lecture_prompt() {
   // 강의명 입력
   while (true) {
     std::cout << "추가할 강의명을 입력해주세요 > ";
-    if ((new_lecture.name = read_name()) != "") {
+    if ((name = read_name()) != "") {
       break;
     }
   }
@@ -44,31 +44,35 @@ void A_add_lecture_prompt() {
   // 교번 선택, 요일/시간 입력, 강의실 선택
   while (true) {
     // 교번 선택
-
+    Lecture new_lecture(num, name);
+    vector<tp> timeplace;
     int prof_choice;  // 사용자 선택 교번 번호 저장
-    vector<int>
-        prof_choice_list;  // 이전 반복까지의 사용자 선택 교번 번호들 저장
-    int number_of_prof = 0;  // (현재까지) 저장할 교강사 수
+    vector<pair<string, string>> prof_choice_list(
+        professor.begin(),
+        professor.end());  // 이전 반복까지의 사용자 선택 교번 번호들 저장
     while (true) {
-      for (int i = 0, j = 0; i < professor.size() - number_of_prof; i++, j++) {
-        if (find(prof_choice_list.begin(), prof_choice_list.end(), i + 1) ==
-            prof_choice_list.end()) {
-          std::cout << j + 1 << ") " << professor[i].second << std::endl;
-        } else
-          j--;
+      if (prof_choice_list.empty()) {
+        std::cout
+            << "! 더 이상 추가할 교강사가 없습니다." << std::endl
+            << "------------------------------------------------------------"
+               "--------------"
+            << std::endl;
+        break;
+      }
+      for (int i = 0; i < prof_choice_list.size(); i++) {
+        std::cout << i + 1 << ") " << prof_choice_list[i].second << std::endl;
       }
       std::cout << "추가할 교강사의 번호(교번 X)를 입력해주세요 > ";
-      prof_choice = check_num_input(professor.size() - number_of_prof);
+      prof_choice = check_num_input(prof_choice_list.size());
       if (prof_choice > 0) {
         new_lecture.professor_id_list.push_back(
-            professor[prof_choice - 1].first);
-        prof_choice_list.push_back(prof_choice);
+            prof_choice_list[prof_choice - 1].first);
+        prof_choice_list.erase(prof_choice_list.begin() + prof_choice - 1);
         std::cout << "1) 예" << std::endl
                   << "0) 아니오" << std::endl
                   << "교강사를 더 추가하시겠습니까? > ";
         int choice = check_num_input(2);
         if (choice == 1) {
-          number_of_prof++;
           continue;
         } else if (choice == 0)
           break;
@@ -85,7 +89,6 @@ void A_add_lecture_prompt() {
     // 요일, 강의시간(교시), 강의실 입력
     while (true) {
       tp new_tp;
-
       // 요일 입력
       while (true) {
         string temp;
@@ -168,34 +171,35 @@ void A_add_lecture_prompt() {
     // 교강사 시간 확인 및 팀티칭 확인
 
     all_classes_list.push_back(new_lecture);
-    if (prof_integrity()) {
+    if (!prof_integrity()) {
       std::cout << "해당 요일/시간에 해당 교강사가 이미 강의중입니다."
                 << std::endl;
       all_classes_list.pop_back();
+      std::cout
+          << "------------------------------------------------------------"
+             "--------------"
+          << '\n';
       // new_lecture 초기화 ?
       continue;
-    } else
-      break;
-  }
+    }
 
-  // 학점 입력
-  while (true) {
-
-    std::cout << "추가할 학점을 입력해주세요 > ";
-    getline(cin, input_credit);
-    input_credit = trim(input_credit);
-    if (stoi(input_credit) >= 1 && stoi(input_credit) <= 3) {
-      new_lecture.credit = input_credit;
-      std::cout
-          << "------------------------------------------------------------"
-             "--------------\n";
-      break;
-    } else
-      std::cout
-          << "! 학점은 1, 2, 3 중 하나여야 합니다." << std::endl
-          << "------------------------------------------------------------"
-             "--------------\n";
-    continue;
+    // 학점 입력
+    while (true) {
+      std::cout << "추가할 학점을 입력해주세요 > ";
+      getline(cin, input_credit);
+      input_credit = trim(input_credit);
+      if (stoi(input_credit) >= 1 && stoi(input_credit) <= 3) {
+        new_lecture.credit = input_credit;
+        std::cout
+            << "------------------------------------------------------------"
+               "--------------\n";
+        break;
+      } else
+        std::cout
+            << "! 학점은 1, 2, 3 중 하나여야 합니다." << std::endl
+            << "------------------------------------------------------------"
+               "--------------\n";
+      continue;
   }
 
   int time1 = 0;
@@ -213,6 +217,7 @@ void A_add_lecture_prompt() {
     time1 += c;
   }
 
+  bool is_lecture_same = false;
   for (int i = 0; i < all_classes_list.size(); i++) {
     if (new_lecture.name == all_classes_list.at(i).name) {
       int time2 = 0;
@@ -221,7 +226,8 @@ void A_add_lecture_prompt() {
             << "! 다른 분반과 학점이 다릅니다." << std::endl
             << "------------------------------------------------------------"
                "--------------\n";
-        return;
+        is_lecture_same = true;
+        break;
       }
       for (int j = 0; j < all_classes_list.at(i).tp_list.size(); j++) {
         int a = stoi(all_classes_list.at(i).tp_list.at(j).time);
@@ -241,10 +247,13 @@ void A_add_lecture_prompt() {
             << "! 다른 분반과 수업 시수가 다릅니다." << std::endl
             << "------------------------------------------------------------"
                "--------------\n";
-        return;
+        is_lecture_same = true;
+        break;
       }
     }
   }
+
+  if (is_lecture_same) continue;
 
   // 강의번호 이미 존재하는지 검사
   std::cout << "동일한 강의번호의 존재유무를 확인합니다." << std::endl;
@@ -305,6 +314,7 @@ void A_add_lecture_prompt() {
               << std::endl;
     return;
   }
+}
 }
 
 // void A_add_lecture_prompt() {

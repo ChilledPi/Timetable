@@ -26,6 +26,7 @@ class Lecture{
 
      Lecture(){};
      Lecture(string num_): num(num_){}
+     Lecture(string num_, string name_) : num(num_), name(name_){}
 
      bool operator<(const Lecture& rhs) const { return num < rhs.num; }
      bool operator==(const Lecture& rhs) const { return num == rhs.num; }
