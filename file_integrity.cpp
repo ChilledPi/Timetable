@@ -87,58 +87,56 @@ void all_class_integrity() {
         while (getline(daytime, dt, ' ')) {
           bool exists = false;
           int c;
-          switch (b % 2) {
-            case 0:
-              if (check_time(dt) != 0) {
-                is_fuckedup = true;
-                // cout << "4\n";
-                break;
-              }
-              c = dt.at(0) - '0';
-              switch (c) {
-                case 0:
-                  thatday.day = MON;
-                  break;
-                case 1:
-                  thatday.day = TUE;
-                  break;
-                case 2:
-                  thatday.day = WED;
-                  break;
-                case 3:
-                  thatday.day = THU;
-                  break;
-                case 4:
-                  thatday.day = FRI;
-                  break;
-              }
-              dt.erase(0, 1);
-              thatday.time = dt;
-              if (!is_expendable(dtl, thatday.day, thatday.time)) {
-                is_fuckedup = true;
-                // cout << "5\n";
-                break;
-              }
+          if ((b % 2) == 0) {
+            if (check_time(dt) != 0) {
+              is_fuckedup = true;
+              // cout << "4\n";
               break;
-            case 1:
-              for (int i = 0; i < classrooms.size(); i++) {
-                if (classrooms.at(i) == dt) {
-                  exists = true;
-                }
-              }
-              if (check_num(dt) != 0 || exists == false) {
-                is_fuckedup = true;
-                // cout << "6\n";
+            }
+            c = dt.at(0) - '0';
+            switch (c) {
+              case 0:
+                thatday.day = MON;
                 break;
-              }
-              if (!room_is_addable(thatday, dt)) {
-                is_fuckedup = true;
-                // cout << "7\n";
+              case 1:
+                thatday.day = TUE;
                 break;
-              }
-              thatday.classroom = dt;
-              dtl.push_back(thatday);
+              case 2:
+                thatday.day = WED;
+                break;
+              case 3:
+                thatday.day = THU;
+                break;
+              case 4:
+                thatday.day = FRI;
+                break;
+            }
+            dt.erase(0, 1);
+            thatday.time = dt;
+            if (!is_expendable(dtl, thatday.day, thatday.time)) {
+              is_fuckedup = true;
+              // cout << "5\n";
               break;
+            }
+          } else if ((b % 2 == 1)) {
+            for (int i = 0; i < classrooms.size(); i++) {
+              if (classrooms.at(i) == dt) {
+                exists = true;
+              }
+            }
+            if (check_num(dt) != 0 || exists == false) {
+              is_fuckedup = true;
+              // cout << "6\n";
+              break;
+            }
+            if (!room_is_addable(thatday, dt)) {
+              is_fuckedup = true;
+              // cout << "7\n";
+              break;
+            }
+            thatday.classroom = dt;
+            dtl.push_back(thatday);
+            break;
           }
           b++;
         }
@@ -156,7 +154,7 @@ void all_class_integrity() {
           }
           if (check_num(p) != 0 || exist == false) {
             is_fuckedup = true;
-            // cout << "8\n";
+            // cout << "7\n";
             break;
           }
           prof.push_back(p);
@@ -166,7 +164,6 @@ void all_class_integrity() {
       } else if (a == 4) {
         if (check_credit(num) == false) {
           is_fuckedup = true;
-          // cout << "9\n";
           break;
         }
         int time1 = 0;
@@ -181,6 +178,7 @@ void all_class_integrity() {
             b = -1;
           }
           int c = b - a;
+          c++;
           time1 += c;
         }
         for (int i = 0; i < all_classes_list.size(); i++) {
@@ -188,7 +186,6 @@ void all_class_integrity() {
             int time2 = 0;
             if (num != all_classes_list.at(i).credit) {
               is_fuckedup = true;
-              // cout << "10\n";
             }
             for (int j = 0; j < all_classes_list.at(i).tp_list.size(); j++) {
               int a = stoi(all_classes_list.at(i).tp_list.at(j).time);
@@ -201,11 +198,11 @@ void all_class_integrity() {
                 b = -1;
               }
               int c = b - a;
+              c++;
               time2 += c;
             }
             if (time1 != time2) {
               is_fuckedup = true;
-              // cout << "11\n";
             }
           }
         }
@@ -216,15 +213,12 @@ void all_class_integrity() {
     if (is_fuckedup || a != 5) {
       cout << classes << endl;
       file_is_fuckedup = true;
-      // cout << "12\n";
     }
     all_classes_list.push_back(all_classes);
   }
-
   if (!prof_integrity()) {
     file_is_fuckedup = true;
   }
-
   if (file_is_fuckedup) {
     // cout << "1";
     abort();
